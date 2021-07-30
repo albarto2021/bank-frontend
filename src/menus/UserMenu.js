@@ -23,6 +23,22 @@ const UserMenu = () => {
     history.push("/logout");
     setAnchorEl(null);
   };
+
+  const handleWithdraw = () => {
+    history.push("/withdraw");
+    setAnchorEl(null);
+  };
+
+  const handleRecipient = () => {
+    history.push("/recipient");
+    setAnchorEl(null);
+  };
+
+  const handleTransfer = () => {
+    history.push("/transfer");
+    setAnchorEl(null);
+  };
+
   return (
     <div>
       <Button
@@ -46,10 +62,9 @@ const UserMenu = () => {
       >
         <MenuItem onClick={showDashboard}>Dashboard</MenuItem>
         <MenuItem onClick={handleDeposit}>Deposit</MenuItem>
-        {/* <MenuItem onClick={handleWithdraw}>Withdraw</MenuItem>
         <MenuItem onClick={handleWithdraw}>Withdraw</MenuItem>
-        <MenuItem onClick={handleWithdraw}>Withdraw</MenuItem>
-        <MenuItem onClick={handleWithdraw}>Withdraw</MenuItem> */}
+        <MenuItem onClick={handleRecipient}>Add Recipient</MenuItem>
+        <MenuItem onClick={handleTransfer}>Transfer</MenuItem>
       </Menu>
     </div>
   );
