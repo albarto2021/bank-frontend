@@ -4,6 +4,9 @@ import { Link, useHistory } from "react-router-dom";
 import "./Header.css";
 import logo from "../images/logo.png";
 import { Icon } from "semantic-ui-react";
+import { useStateValue } from "../StateProvider";
+import UserMenu from "../menus/UserMenu";
+import AdminMenu from "../menus/AdminMenu";
 
 const Header = () => {
   return (
@@ -17,7 +20,6 @@ const Header = () => {
           </Row>
         </Container>
       </Container>
-
       <Container className="nav-middle">
         <Row>
           <Col>
@@ -30,7 +32,6 @@ const Header = () => {
           </Col>
         </Row>
       </Container>
-
       <Container>
         <Row>
           <Col>
@@ -41,13 +42,11 @@ const Header = () => {
     </div>
   );
 };
-
 const TopNav = () => {
   const history = useHistory();
   const handleNavClick = (eventKey) => {
     history.push(`/${eventKey}`);
   };
-
   return (
     <div>
       <Nav
@@ -71,14 +70,14 @@ const TopNav = () => {
     </div>
   );
 };
-
 const MiddleNav = () => {
+  const [{ userInfo }, dispatch] = useStateValue();
   return (
     <div>
-      <Nav clasName="d-flex justify-content-end">
-        <Nav.Item className="me-4">
-          <Nav.Link bsPrefix="middle-navbar">
-            <Link to="/login">
+      {!userInfo && (
+        <Nav className="d-flex justify-content-end">
+          <Nav.Item className="me-4">
+            <Nav.Link bsPrefix="middle-navbar" as={Link} to="/login">
               <Icon
                 name="user"
                 circular
@@ -86,12 +85,10 @@ const MiddleNav = () => {
                 className="d-block mb-2"
               ></Icon>
               Sign In
-            </Link>
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link bsPrefix="middle-navbar">
-            <Link to="/register">
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link bsPrefix="middle-navbar" as={Link} to="/register">
               <Icon
                 name="unlock alternate"
                 circular
@@ -99,23 +96,22 @@ const MiddleNav = () => {
                 className="d-block mb-2 ms-2"
               ></Icon>
               Register
-            </Link>
-          </Nav.Link>
-        </Nav.Item>
-      </Nav>
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
+      )}
+      {userInfo && userInfo.user && !userInfo.user.isAdmin && <UserMenu />}
+      {userInfo && userInfo.user && userInfo.user.isAdmin && <AdminMenu />}
     </div>
   );
 };
-
 const NavBottom = () => {
   const history = useHistory();
   const [activeKey, setActiveKey] = useState("home");
-
   const handleItemClick = (eventKey) => {
     eventKey === "home" ? history.push(`/`) : history.push(`/${eventKey}`);
     setActiveKey(eventKey);
   };
-
   return (
     <Navbar expand="md">
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -145,5 +141,4 @@ const NavBottom = () => {
     </Navbar>
   );
 };
-
 export default Header;

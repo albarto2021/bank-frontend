@@ -5,8 +5,7 @@ import Footer from "./footer/Footer";
 import About from "./about/About";
 import Login from "./login/Login";
 import Register from "./register/Register";
- import "react-toastify/dist/ReactToastify.css";
-
+import User from "./user/User";
 function App() {
   return (
     <div className="App">
@@ -25,11 +24,13 @@ function App() {
           <Route path="/register">
             <Register />
           </Route>
+          <Route path="/user">
+            <User />
+          </Route>
         </Switch>
         <Footer />
       </Router>
     </div>
   );
 }
-
 export default App;

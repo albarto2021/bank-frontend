@@ -9,7 +9,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { useStateValue } from "../StateProvider";
 import service from "../service/BankService";
 import { useHistory } from "react-router";
+
 import "./Login.css";
+
 const LoginForm = (props) => (
   <Container className="d-flex justify-content-center">
     <fieldset>
@@ -25,6 +27,7 @@ const LoginForm = (props) => (
               type="text"
             />
           </Col>
+
           <Col xs={12} md={6} className="text-center p-3">
             <label htmlFor="password">Password:</label>
             <Field
@@ -53,6 +56,7 @@ const LoginForm = (props) => (
     </fieldset>
   </Container>
 );
+
 const Login = () => {
   const history = useHistory();
   const [{ userInfo }, dispatch] = useStateValue();
@@ -72,6 +76,9 @@ const Login = () => {
         onSubmit={(values, actions) => {
           service.login(values).then((res) => {
             if (res.status === 200) {
+              toast.success("Login Successful", {
+                position: toast.POSITION.TOP_CENTER,
+              });
               const userInfo = res.data;
               localStorage.setItem(
                 "auth",
@@ -81,20 +88,16 @@ const Login = () => {
                 type: "LOGIN",
                 item: userInfo,
               });
-              toast.success("Login Successful", {
-                position: toast.POSITION.TOP_CENTER,
-              });
+
               if (userInfo?.user?.isAdmin) {
                 history.push("/admin");
               } else {
                 history.push("/user");
               }
-
               actions.resetForm();
+              actions.setSubmitting(false);
             }
           });
-
-          actions.setSubmitting(false);
         }}
         component={LoginForm}
       ></Formik>
@@ -102,4 +105,5 @@ const Login = () => {
     </div>
   );
 };
+
 export default Login;
